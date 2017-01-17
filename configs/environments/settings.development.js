@@ -3,6 +3,7 @@
 require("rootpath")();
 
 const path = require("path");
+const ip = require('ip');
 
 module.exports = {
    project: require("package"),
@@ -25,6 +26,7 @@ module.exports = {
         whitelist: [
             "http://localhost:4200"
         ],
+        networkIP: ip.address(),
         http: {
             active: true,
             host: process.env.HTTP_HOST || "http://localhost",

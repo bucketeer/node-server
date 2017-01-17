@@ -25,7 +25,11 @@
     "debug": "^2.6.0",
     "express": "^4.14.0",
     "file-stream-rotator": "0.0.7",
+    "frisby": "^0.8.5",
     "glob": "^7.1.1",
+    "ip": "^1.1.4",
+    "jasmine-core": "^2.5.2",
+    "jasmine-node": "^1.14.5",
     "jsonwebtoken": "^7.2.1",
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
@@ -43,11 +47,7 @@
     "uuid": "^3.0.1",
     "winston": "^2.3.0",
     "winston-daily-rotate-file": "^1.4.3",
-    "zone.js": "^0.6.23",
-    "frisby": "^0.8.5",
-    "jasmine-core": "^2.5.2",
-    "jasmine-node": "^1.14.5"
+    "zone.js": "^0.6.23"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

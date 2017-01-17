@@ -27,5 +27,4 @@ swaggerApp.use(express.static(path.join(__dirname, "../swagger")));
     swaggerExpress.configureSwaggerPaths("", "api-docs", "");
     swaggerExpress.configure(`${settings.server.http.host}:${settings.server.http.port}`, "1.0.0");
     server.use("/", swaggerApp); 
-    winston.info(`API documentation can be viewed at ${settings.server.http.host}:${settings.server.http.port}`);   
 };
