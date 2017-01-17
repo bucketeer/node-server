@@ -1,0 +1,137 @@
+{  
+   "swagger":"2.0",
+   "info":{  
+      "version":"1.0.0",
+      "title":"Bucketeer API",
+      "description":"API documentation for this API",
+      "termsOfService":"http://swagger.io/terms/"
+   },
+   "basePath":"/",
+   "tags":[  
+      {  
+         "name":"Users",
+         "description":"Buckets Users API"
+      },
+      {  
+         "name":"Goals",
+         "description":"Buckets Goals API"
+      },
+      {  
+         "name":"Events",
+         "description":"Buckets Events API"
+      }
+   ],
+   "schemes":[  
+      "http"
+   ],
+   "consumes":[  
+      "application/json"
+   ],
+   "produces":[  
+      "application/json"
+   ],
+   "paths":{  
+      "/api/users":{  
+         "get": {
+            "tags":[  
+               "Users"
+            ]
+         }
+      }, 
+      "/api/users/signin":{  
+         "post": {
+            "tags":[  
+               "Users"
+            ]
+         }
+      }, 
+      "/api/users/signup":{  
+         "post": {
+            "tags":[  
+               "Users"
+            ]
+         }
+      },   
+       "/api/users/:id":{  
+         "put": {
+            "tags":[  
+               "Users"
+            ]
+         },
+         "delete": {
+            "tags":[  
+               "Users"
+            ]
+         }
+      },      
+      "/api/goals":{  
+        "get": {
+            "tags":[  
+               "Goals"
+            ]
+         },
+         "post": {
+            "tags":[  
+               "Goals"
+            ]
+         }
+      },
+      "/api/goals/:id":{  
+        "put": {
+            "tags":[  
+               "Goals"
+            ]
+         },
+         "delete": {
+            "tags":[  
+               "Goals"
+            ]
+         }
+      },
+      "/api/events":{  
+        "get": {
+            "tags":[  
+               "Events"
+            ]
+         },
+         "post": {
+            "tags":[  
+               "Events"
+            ]
+         }
+      },
+      "/api/events/:id":{  
+        "delete": {
+            "tags":[  
+               "Events"
+            ]
+         }
+      }
+   },
+   "securityDefinitions":{  
+      "api_key":{  
+         "type":"apiKey",
+         "name":"cd_token",
+         "in":"header"
+      }
+   },
+   "definitions":{  
+      "User":{  
+         "type":"object",
+         "properties":{  
+            "email":{  
+               "type":"string"
+            },
+            "password":{  
+               "type":"string"
+            },
+            "admin":{  
+               "type":"boolean"
+            },
+            "purchases":{  
+               "type":"object"
+            }
+         }
+      }
+   }
+}
