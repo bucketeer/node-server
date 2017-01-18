@@ -51,7 +51,7 @@ let userSchema = new mongoose.Schema({
     default: ["basic"]
   },
   profile: {
-    img: {
+    media: {
       preferUpload: {
         type: Boolean,
         default: true
@@ -59,7 +59,7 @@ let userSchema = new mongoose.Schema({
       url: {
         type: String        
       },
-      upload: {
+      img: {
         data: Buffer, 
         contentType: String
       }

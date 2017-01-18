@@ -32,7 +32,7 @@ frisby.create("Sign Up User")
             	email: testEmail, 
             	password: "password",                
             	profile: {
-                    img: {
+                    media: {
                         url: "url here"
                     },
             		username: testEmail.replace("@email.com",""),
@@ -102,7 +102,7 @@ frisby.create("Update User By Id")
         	user: {
                 roles: ["admin"],
 	        	profile: {
-                    img: {
+                    media: {
                         url: "url2 here"
                     },
 	        		username: testEmail.replace("@email.com",""),

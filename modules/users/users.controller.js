@@ -65,8 +65,9 @@ module.exports.signUpUser = (req, res) => {
         password: req.body.user.password,
         goals: req.body.user.goals,
         profile: {
-            img: {
-                url: req.body.user.profile.img.url
+            media: {
+                url: req.body.user.profile.media.url,
+                img: req.body.user.profile.media.img
             },
             username: req.body.user.profile.username,
             name: req.body.user.profile.name,

@@ -9,25 +9,25 @@ const port      = settings.server.http.port;
 const mongoose  = require("mongoose");
 const uuid      = require("uuid");
 const testId    = mongoose.Types.ObjectId();
-const groupId   = uuid.v1();
+const testEmail = `${new Date().getMilliseconds().toString()}@email.com`;
 const wait      = 0;  
 
 let users = [
 	{			
 		"_id":"",
-		"email": "bvarghese@email.com", 
+		"email": testEmail, 
 		"password": "password",
 		"goals":["587aabfeb33172f18d68286f"],
-		"roles":["admin"],
+		"roles":[],
 		"profile": {
 			"username": "avarghese",
 			"name": "arun varghese",
 			"gender": "Male",
 			"location": "Dallas, TX",
-			"img": {
+			"media": {
 				"preferUpload":false,
 				"url":"http://placehold.it/140x100",
-				"upload":""
+				"img":""
 			},
 		}
 	}
