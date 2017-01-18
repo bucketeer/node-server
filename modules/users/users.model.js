@@ -8,6 +8,7 @@ const crypto = require("crypto");
 const validate = require("mongoose-validator");
 const timestamps = require("mongoose-timestamp");
 const paginate = require("mongoose-paginate");
+const winston = require("winston");
 
 let userSchema = new mongoose.Schema({
   email: {
@@ -91,6 +92,10 @@ let userSchema = new mongoose.Schema({
     location: {
       type: String,
       default: ""
+    },
+    joined: {
+      type: Date,
+      default: new Date()
     }
   },
   lastLoggedIn: {
@@ -112,7 +117,7 @@ userSchema.methods.comparePassword = function (password, callback) {
       user.lastLoggedIn = Date.now();
       user.save(function (err) {
         if (err) {
-          console.error(JSON.stringify(err));
+          winston.error(JSON.stringify(err));
         }
       })
     }    

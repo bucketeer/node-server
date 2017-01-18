@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const User = require("modules/users/users.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`); 
 const select = "_id email goals roles profile";
+const winston = require("winston");
 
 module.exports.getUsers = (req, res) => {
     let redirect = req.body.redirect || false;

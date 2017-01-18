@@ -6,6 +6,7 @@ const Event = require("modules/events/events.model");
 const Goal = require("modules/goals/goals.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`); 
 const select = "_id name description category hashtags media location completed isPrivate";
+const winston = require("winston");
 
 module.exports.getGoals = (req, res) => {
     let redirect = req.body.redirect || false;
