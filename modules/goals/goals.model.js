@@ -13,6 +13,9 @@ let goalSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String
+  },
   category: {
     type: String,
     required: true
@@ -25,7 +28,7 @@ let goalSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
-  img: {
+  media: {
     preferUpload: {
         type: Boolean,
         default: true
@@ -33,7 +36,7 @@ let goalSchema = new mongoose.Schema({
     url: {
       type: String        
     },
-    upload: {
+    img: {
       data: Buffer, 
       contentType: String
     }

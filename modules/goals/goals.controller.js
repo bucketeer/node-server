@@ -5,7 +5,7 @@ require("rootpath")();
 const Event = require("modules/events/events.model");
 const Goal = require("modules/goals/goals.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`); 
-const select = "_id name category hashtags img location completed isPrivate";
+const select = "_id name description category hashtags media location completed isPrivate";
 
 module.exports.getGoals = (req, res) => {
     let redirect = req.body.redirect || false;
@@ -64,13 +64,14 @@ module.exports.createGoal = (req, res) => {
     }
     let goal = new Goal({
         name: req.body.goal.name,
+        description: req.body.goal.description,
         category:req.body.goal.category,
         hashtags: req.body.goal.hashtags,
         location: req.body.goal.location,
-        img: req.body.goal.img,
+        media: req.body.goal.media,
         completed: req.body.goal.completed,
         isPrivate: req.body.goal.isPrivate
-    });
+    });    
     if(req.body.goal._id){
         goal._id = req.body.goal._id;
     }
@@ -101,10 +102,11 @@ module.exports.createGoal = (req, res) => {
                 goal: {
                     _id: goal._id,
                     name: goal.name,
+                    description: goal.description,
                     category: goal.category,
                     hashtags:  goal.hashtags,
                     location:  goal.location,
-                    img: goal.img,
+                    media: goal.media,
                     completed: goal.completed, 
                     isPrivate:  goal.isPrivate                
                 },
@@ -144,10 +146,11 @@ module.exports.updateGoalById = (req,res) => {
     let updategoal = { 
         $set: {
             name: req.body.goal.name,
+            description: req.body.goal.description,
             category:req.body.goal.category,
             hashtags: req.body.goal.hashtags,
             location: req.body.goal.location,
-            img: req.body.goal.img,
+            media: req.body.goal.media,
             completed: req.body.goal.completed, 
             isPrivate: req.body.goal.isPrivate
         }
@@ -170,10 +173,11 @@ module.exports.updateGoalById = (req,res) => {
         goal: {
             _id: goal._id,
             name: req.body.goal.name,
+            description: req.body.goal.description,
             category: req.body.goal.category,
             hashtags:  req.body.goal.hashtags,
             location:  req.body.goal.location,
-            img: req.body.goal.img,
+            media: req.body.goal.media,
             completed: req.body.goal.completed,
             isPrivate:  req.body.goal.isPrivate  
         },

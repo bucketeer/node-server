@@ -30,7 +30,7 @@ frisby.create("Create Goal")
                 _id: testId,
             	name: "testGoal",
                 category: "testCategory",
-                img: {
+                media: {
                     url: "url here"
                 }                                               
             }
@@ -65,9 +65,10 @@ frisby.create("Update Goal By Id")
         {
         	goal: {
                 name: "goal2",
+                description:"description",
                 category: "category2",
                 hashtags: ["tag1"],
-                img: {
+                media: {
                     url: "url2 here"
                 },
                 completed: {

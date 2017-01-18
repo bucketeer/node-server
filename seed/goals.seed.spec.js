@@ -12,15 +12,20 @@ const wait      = 0;
 let goals = [
 	{
 		"name":"Make an API",
+		"description":"description goes here",
 		"category":"development",
 		"hashtags":["dev","software"],
-		"location":"",
-		"img": {
+		"location":"Dallas, TX",
+		"media": {
 			"preferUpload":false,
-			"url":"http://placehold.it/140x100",
-			"upload":""
+			"url":"http://placehold.it/140x100",			
+			"img":""
 		},
-		"private":false
+		"completed": {
+			"status": true,
+			"date": new Date()
+		},
+		"isPrivate":false
 	}
 ];
 
