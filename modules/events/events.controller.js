@@ -30,8 +30,8 @@ module.exports.getEvents = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0001",
-                errMsg: JSON.stringify(err),
-                msg: "Failed to get events.",
+                errMsg: "Failed to get events.",
+                msg: JSON.stringify(err),
                 redirect: redirect
             };
             return res.status(500).send(errorObj);
@@ -59,7 +59,7 @@ module.exports.createEvent = (req, res) => {
         errorObj = {
             success: false,
             errCode: "0002",
-            msg: "No event data supplied",
+            errMsg: "No event data supplied",
             redirect: redirect
         };
         return res.status(400).send(errorObj);
@@ -79,8 +79,8 @@ module.exports.createEvent = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0006",
-                errMsg: JSON.stringify(err.errors),
-                msg: "Validation error creating event.",
+                errMsg: "Validation error creating event.",
+                msg: JSON.stringify(err.errors),
                 redirect: redirect
             };
             return res.status(400).send(errorObj);
@@ -89,8 +89,8 @@ module.exports.createEvent = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0007",
-                errMsg: JSON.stringify(err),
-                msg: "Error creating event.",
+                errMsg: "Error creating event.",
+                msg: JSON.stringify(err),
                 redirect: redirect
             };
             return res.status(500).send(errorObj);
@@ -123,8 +123,8 @@ module.exports.deleteEventById = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0011",
-                errMsg: JSON.stringify(err),
-                msg: "Error deleting event.",
+                errMsg: "Error deleting event.",
+                msg: JSON.stringify(err),
                 redirect: redirect
             };
             return res.status(500).send(errorObj);

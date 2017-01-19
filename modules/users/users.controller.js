@@ -29,8 +29,8 @@ module.exports.getUsers = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0001",
-                errMsg: JSON.stringify(err),
-                msg: "Failed to get users.",
+                errMsg: "Failed to get users.",
+                msg: JSON.stringify(err),
                 redirect: redirect
             };
             return res.status(500).send(errorObj);
@@ -58,7 +58,7 @@ module.exports.signUpUser = (req, res) => {
         errorObj = {
             success: false,
             errCode: "0002",
-            msg: "No user data supplied",
+            errMsg: "No user data supplied",
             redirect: redirect
         };
         return res.status(400).send(errorObj);
@@ -66,18 +66,22 @@ module.exports.signUpUser = (req, res) => {
     let user = new User({
         email: req.body.user.email,
         password: req.body.user.password,
-        goals: req.body.user.goals,
-        profile: {
-            media: {
-                url: req.body.user.profile.media.url,
-                img: req.body.user.profile.media.img
-            },
+        goals: req.body.user.goals,       
+    });
+    if(req.body.user.profile){
+         user.profile = {
             username: req.body.user.profile.username,
             name: req.body.user.profile.name,
             gender: req.body.user.profile.gender,
             location: req.body.user.profile.location
         }
-    });
+        if(req.body.user.profile.media) {
+            user.profile.media = {
+                url: req.body.user.profile.media.url,
+                img: req.body.user.profile.media.img
+            }
+        }
+    }
     if (req.body.user._id) {
         user._id = req.body.user._id;
     }
@@ -89,20 +93,20 @@ module.exports.signUpUser = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0003",
-                errMsg: JSON.stringify(err),
-                msg: "Error creating user.",
+                errMsg: "Error creating user.",
+                msg: JSON.stringify(err),
                 redirect: redirect
             };
-            return res.status(400).send(errorObj);
+            return res.status(500).send(errorObj);
         }
         if (existingUser) {
             errorObj = {
                 success: false,
                 errCode: "0004",
-                msg: "User with that email address already exists.",
+                errMsg: "User with that email address already exists.",
                 redirect: redirect
             };
-            return res.status(400).send(errorObj);
+            return res.status(200).send(errorObj);
         }
         user.save(function (err) {
             if (err && err.code === 11000) {
@@ -110,11 +114,11 @@ module.exports.signUpUser = (req, res) => {
                 errorObj = {
                     success: false,
                     errCode: "0005",
-                    errMsg: JSON.stringify(err),
-                    msg: "User with that email address already exists.",
+                    errMsg: "User with that email address already exists.",
+                    msg: JSON.stringify(err),
                     redirect: redirect
                 };
-                return res.status(400).send(errorObj);
+                return res.status(200).send(errorObj);
             } else if (err && err.name === "ValidationError") {
                 winston.error(JSON.stringify(err.errors));
                 errorObj = {
@@ -124,14 +128,14 @@ module.exports.signUpUser = (req, res) => {
                     msg: JSON.stringify(err.errors),
                     redirect: redirect
                 };
-                return res.status(400).send(errorObj);
+                return res.status(200).send(errorObj);
             } else if (err) {
                 winston.error(JSON.stringify(err));
                 errorObj = {
                     success: false,
                     errCode: "0007",
-                    errMsg: JSON.stringify(err),
-                    msg: "Error creating user.",
+                    errMsg: "Error creating user.",
+                    msg: JSON.stringify(err),
                     redirect: redirect
                 };
                 return res.status(500).send(errorObj);
@@ -172,8 +176,8 @@ module.exports.signInUser = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0008",
-                errMsg: JSON.stringify(err),
-                msg: "Failed to sign in user.",
+                errMsg: "Failed to sign in user.",
+                msg: JSON.stringify(err),
                 authenticated: false,
                 redirect: "/signin"
             };
@@ -183,7 +187,7 @@ module.exports.signInUser = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0009",
-                msg: "Email or Password is incorrect.",
+                errMsg: "Email or Password is incorrect.",
                 authenticated: false,
                 redirect: "/signin"
             };
@@ -211,8 +215,8 @@ module.exports.signInUser = (req, res) => {
                 errorObj = {
                     success: false,
                     errCode: "0010",
-                    errMsg: JSON.stringify(err),
-                    msg: "Email or Password is incorrect.",
+                    errMsg: "Email or Password is incorrect.",
+                    msg: JSON.stringify(err),
                     authenticated: false,
                     redirect: "/signin"
                 };
@@ -252,7 +256,7 @@ module.exports.updateUserById = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0013",
-                msg: "User does not exist.",
+                errMsg: "User does not exist.",
                 redirect: redirect
             };
             return res.status(404).send(errorObj);
@@ -262,8 +266,8 @@ module.exports.updateUserById = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0014",
-                errMsg: JSON.stringify(err),
-                msg: "Failed to update user.",
+                errMsg: "Failed to update user.",
+                msg: JSON.stringify(err),
                 redirect: redirect
             };
             return res.status(500).send(errorObj);
@@ -285,8 +289,8 @@ module.exports.updateUserById = (req, res) => {
                 errorObj = {
                     success: false,
                     errCode: "0015",
-                    errMsg: JSON.stringify(err),
-                    msg: "Failed to update user.",
+                    errMsg: "Failed to update user.",
+                    msg: JSON.stringify(err),
                     redirect: redirect
                 };
                 return res.status(500).send(errorObj);
@@ -320,8 +324,8 @@ module.exports.deleteUserById = (req, res) => {
             errorObj = {
                 success: false,
                 errCode: "0011",
-                errMsg: JSON.stringify(err),
-                msg: "Error deleting user.",
+                errMsg: "Error deleting user.",
+                msg: JSON.stringify(err),
                 redirect: redirect
             };
             return res.status(500).send(errorObj);
