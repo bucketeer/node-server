@@ -14,13 +14,16 @@ module.exports.getEvents = (req, res) => {
     let pageSize = parseInt(req.query.pageSize || settings.api.results.defaultPageSize || 1);
     let page = parseInt(req.query.page || 0);
     let filter = {};
+    
     if (req.query._id) {
         filter._id = req.query._id;
     }
+    
     if (req.query.groupId) {
         filter.groupId = req.query.groupId;
     }
-    Event.paginate(filter, {
+  
+   Event.paginate(filter, {
         select,
         offset: page * pageSize,
         limit: pageSize
@@ -36,6 +39,7 @@ module.exports.getEvents = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
+        
         successObj = {
             success: true,
             msg: "Events retrieved successfully.",
@@ -55,6 +59,7 @@ module.exports.createEvent = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
+    
     if (!req.body.event) {
         errorObj = {
             success: false,
@@ -64,15 +69,18 @@ module.exports.createEvent = (req, res) => {
         };
         return res.status(400).send(errorObj);
     }
+    
     let event = new Event({
         groupId: req.body.event.groupId,
         type: req.body.event.type,
         text: req.body.event.text,
         success: req.body.event.success
     });
+    
     if (req.body.event._id) {
         event._id = req.body.event._id;
     }
+
     event.save(function (err) {
         if (err && err.name === "ValidationError") {
             winston.error(JSON.stringify(err.errors));
@@ -106,7 +114,7 @@ module.exports.createEvent = (req, res) => {
                 },
                 redirect: redirect
             };
-            res.status(201).send(successObj);
+            return res.status(201).send(successObj);
         }
     });
 };
@@ -115,6 +123,7 @@ module.exports.deleteEventById = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
+    
     Event.remove({
         _id: req.params._id
     }, function (err) {
@@ -129,11 +138,12 @@ module.exports.deleteEventById = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
+        
         successObj = {
             success: true,
             msg: "Event deleted successfully.",
             redirect: redirect
         };
-        res.status(200).send(successObj);
+        return res.status(200).send(successObj);
     });
 };

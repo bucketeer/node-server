@@ -13,6 +13,9 @@ let eventSchema = new mongoose.Schema({
     type: String,
     index: true
   },
+  userId: {
+    type: String    
+  },
   type: {
     type: String,
     index: true,

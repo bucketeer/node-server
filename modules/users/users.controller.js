@@ -16,9 +16,11 @@ module.exports.getUsers = (req, res) => {
     let pageSize = parseInt(req.query.pageSize || settings.api.results.defaultPageSize || 1);
     let page = parseInt(req.query.page || 0);
     let filter = {};
+
     if (req.query.email) {
         filter.email = req.query.email;
     }
+
     User.paginate(filter, {
         select,
         offset: page * pageSize,
@@ -35,6 +37,7 @@ module.exports.getUsers = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
+
         successObj = {
             success: true,
             msg: "Users retrieved successfully.",
@@ -46,6 +49,7 @@ module.exports.getUsers = (req, res) => {
             previousPage: (page - 1 < 0) ? false : `${settings.server.http.host}:${settings.server.http.port}/api/users?page=${page-1}`,
             redirect: redirect
         };
+
         return res.status(200).send(successObj);
     });
 };
@@ -54,6 +58,7 @@ module.exports.signUpUser = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
+
     if (!req.body.user) {
         errorObj = {
             success: false,
@@ -61,30 +66,35 @@ module.exports.signUpUser = (req, res) => {
             errMsg: "No user data supplied",
             redirect: redirect
         };
-        return res.status(400).send(errorObj);
+        return res.status(200).send(errorObj);
     }
+
     let user = new User({
         email: req.body.user.email,
         password: req.body.user.password,
-        goals: req.body.user.goals,       
+        goals: req.body.user.goals,
     });
-    if(req.body.user.profile){
-         user.profile = {
+
+    if (req.body.user.profile) {
+        user.profile = {
             username: req.body.user.profile.username,
             name: req.body.user.profile.name,
             gender: req.body.user.profile.gender,
             location: req.body.user.profile.location
-        }
-        if(req.body.user.profile.media) {
+        };
+
+        if (req.body.user.profile.media) {
             user.profile.media = {
                 url: req.body.user.profile.media.url,
                 img: req.body.user.profile.media.img
-            }
+            };
         }
     }
+
     if (req.body.user._id) {
         user._id = req.body.user._id;
     }
+
     User.findOne({
         email: req.body.user.email
     }, (err, existingUser) => {
@@ -99,6 +109,7 @@ module.exports.signUpUser = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
+
         if (existingUser) {
             errorObj = {
                 success: false,
@@ -108,6 +119,7 @@ module.exports.signUpUser = (req, res) => {
             };
             return res.status(200).send(errorObj);
         }
+
         user.save(function (err) {
             if (err && err.code === 11000) {
                 winston.error(JSON.stringify(err));
@@ -120,9 +132,9 @@ module.exports.signUpUser = (req, res) => {
                 };
                 return res.status(200).send(errorObj);
             } else if (err && err.name === "ValidationError") {
-                winston.error(JSON.stringify(err.errors));
                 errorObj = {
                     success: false,
+                    isValidationError: true,
                     errCode: "0006",
                     errMsg: "Validation error creating user.",
                     msg: JSON.stringify(err.errors),
@@ -158,7 +170,7 @@ module.exports.signUpUser = (req, res) => {
                     token: token,
                     redirect: redirect
                 };
-                res.status(201).send(successObj);
+                return res.status(201).send(successObj);
             }
         });
     });
@@ -168,6 +180,7 @@ module.exports.signInUser = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
+
     User.findOne({
         email: req.body.user.email
     }, (err, user) => {
@@ -183,6 +196,7 @@ module.exports.signInUser = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
+
         if (!user) {
             errorObj = {
                 success: false,
@@ -193,6 +207,7 @@ module.exports.signInUser = (req, res) => {
             };
             return res.status(200).send(errorObj);
         }
+
         if (!req.body.authenticate) {
             successObj = {
                 success: true,
@@ -209,6 +224,7 @@ module.exports.signInUser = (req, res) => {
             };
             return res.status(200).send(successObj);
         }
+
         user.comparePassword(req.body.user.password, (err, isMatch) => {
             if (!isMatch || err) {
                 winston.error(JSON.stringify(err));
@@ -222,10 +238,13 @@ module.exports.signInUser = (req, res) => {
                 };
                 return res.status(200).send(errorObj);
             }
+
             let token = jwt.sign({
                 _id: user._id
             }, settings.token.secret, settings.token.options);
+
             res.cookie("token", token);
+
             successObj = {
                 success: true,
                 msg: "User signed in successfully.",
@@ -249,6 +268,7 @@ module.exports.updateUserById = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
+
     User.findOne({
         _id: req.params._id
     }, (err, user) => {
@@ -261,6 +281,7 @@ module.exports.updateUserById = (req, res) => {
             };
             return res.status(404).send(errorObj);
         }
+
         if (err) {
             winston.error(JSON.stringify(err));
             errorObj = {
@@ -272,6 +293,7 @@ module.exports.updateUserById = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
+
         let updateUser = {
             $set: {
                 goals: req.body.user.goals,
@@ -279,6 +301,7 @@ module.exports.updateUserById = (req, res) => {
                 profile: req.body.user.profile
             }
         }
+
         User.update({
             _id: user._id
         }, updateUser, {
@@ -295,6 +318,7 @@ module.exports.updateUserById = (req, res) => {
                 };
                 return res.status(500).send(errorObj);
             }
+
             successObj = {
                 success: true,
                 msg: "User updated successfully.",
@@ -316,6 +340,7 @@ module.exports.deleteUserById = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
+
     User.remove({
         _id: req.params._id
     }, function (err) {
@@ -330,12 +355,13 @@ module.exports.deleteUserById = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
+
         successObj = {
             success: true,
             msg: "User deleted successfully.",
             redirect: redirect
         };
-        res.status(200).send(successObj);
+        return res.status(200).send(successObj);
     });
 };
 
@@ -343,11 +369,13 @@ module.exports.signOutUser = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
+
     res.cookie("token", "");
+
     successObj = {
         success: true,
         msg: "User successfully signed out.",
         redirect: redirect
     };
-    res.status(200).send(successObj);
+    return res.status(200).send(successObj);
 };

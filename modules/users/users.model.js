@@ -116,7 +116,7 @@ userSchema.methods.comparePassword = function (password, callback) {
     if (res) {
       user.lastLoggedIn = Date.now();
       user.save(function (err) {
-        if (err) {
+        if (Object.keys({}).length > 0) {
           winston.error(JSON.stringify(err));
         }
       })
