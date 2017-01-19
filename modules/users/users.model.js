@@ -35,7 +35,7 @@ let userSchema = new mongoose.Schema({
     validate: [
       validate({
         validator: "isLength",
-        arguments: [ 6, 255 ],
+        arguments: [6, 255],
         message: "password must be at least 6 characters"
       })
     ]
@@ -58,10 +58,10 @@ let userSchema = new mongoose.Schema({
         default: true
       },
       url: {
-        type: String        
+        type: String
       },
       img: {
-        data: Buffer, 
+        data: Buffer,
         contentType: String
       }
     },
@@ -120,37 +120,37 @@ userSchema.methods.comparePassword = function (password, callback) {
           winston.error(JSON.stringify(err));
         }
       })
-    }    
+    }
     callback(err, res);
   })
 }
 
-userSchema.pre("save", function(next) {
-    mongoose.models.User.findOne({
-        email: this.email
-    }, function(err, user) {
-        if (user) {            
-            next(new Error("user", "Email already in use."));
-        } else {
-            next();
-        }
-    });
-});
-
-userSchema.pre("save", function(next) {
-    let user = this;
-    const currentDate = new Date();
-    this.updatedAt = currentDate;
-    if (!this.createdAt) {
-        this.createdAt = currentDate;
+userSchema.pre("save", function (next) {
+  mongoose.models.User.findOne({
+    email: this.email
+  }, function (err, user) {
+    if (user) {
+      next(new Error("user", "Email already in use."));
+    } else {
+      next();
     }
-    next();
+  });
 });
 
-userSchema.pre("save", function(next) {
+userSchema.pre("save", function (next) {
   let user = this;
-  bcrypt.genSalt(10, function(err, salt){
-    if(err) {
+  const currentDate = new Date();
+  this.updatedAt = currentDate;
+  if (!this.createdAt) {
+    this.createdAt = currentDate;
+  }
+  next();
+});
+
+userSchema.pre("save", function (next) {
+  let user = this;
+  bcrypt.genSalt(10, function (err, salt) {
+    if (err) {
       return next(err);
     }
     user.password = bcrypt.hashSync(user.password, salt);

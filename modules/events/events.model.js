@@ -27,13 +27,13 @@ let eventSchema = new mongoose.Schema({
   }
 });
 
-eventSchema.pre("save", function(next) {
-    var currentDate = new Date();
-    this.updatedAt = currentDate;
-    if (!this.createdat) {
-        this.createdAt = currentDate;
-    }
-    next();
+eventSchema.pre("save", function (next) {
+  var currentDate = new Date();
+  this.updatedAt = currentDate;
+  if (!this.createdat) {
+    this.createdAt = currentDate;
+  }
+  next();
 });
 
 eventSchema.set("toObject", {

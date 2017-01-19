@@ -11,4 +11,3 @@ api.post("/", events.createEvent);
 api.delete("/:_id", events.deleteEventById);
 
 module.exports = api;
-

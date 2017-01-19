@@ -13,4 +13,3 @@ api.put("/:_id", goals.updateGoalById);
 api.delete("/:_id", goals.deleteGoalById);
 
 module.exports = api;
-

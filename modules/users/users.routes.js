@@ -15,4 +15,3 @@ api.delete("/:_id", users.deleteUserById);
 api.post("/signout", users.signOutUser);
 
 module.exports = api;
-

@@ -30,14 +30,14 @@ let goalSchema = new mongoose.Schema({
   },
   media: {
     preferUpload: {
-        type: Boolean,
-        default: true
+      type: Boolean,
+      default: true
     },
     url: {
-      type: String        
+      type: String
     },
     img: {
-      data: Buffer, 
+      data: Buffer,
       contentType: String
     }
   },
@@ -56,14 +56,14 @@ let goalSchema = new mongoose.Schema({
   }
 });
 
-goalSchema.pre("save", function(next) {
-    let goal = this;
-    const currentDate = new Date();
-    this.updatedAt = currentDate;
-    if (!this.createdAt) {
-        this.createdAt = currentDate;
-    }
-    next();
+goalSchema.pre("save", function (next) {
+  let goal = this;
+  const currentDate = new Date();
+  this.updatedAt = currentDate;
+  if (!this.createdAt) {
+    this.createdAt = currentDate;
+  }
+  next();
 });
 
 goalSchema.set("toObject", {
