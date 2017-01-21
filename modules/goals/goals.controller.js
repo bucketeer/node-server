@@ -16,17 +16,17 @@ module.exports.getGoals = (req, res) => {
     let page = parseInt(req.query.page || 0);
     let filter = {};
     
-    if (req.query.id) {
+    if (req.query._id) {
         filter._id = req.query._id;
     }
     
-    if (req.query.ids) {
+    if (req.query._ids) {
         let idList = req.query._ids;
         filter._id = {
             $in: idList
         };
     }
-    
+    console.log(JSON.stringify(filter));
     Goal.paginate(filter, {
         select,
         offset: page * pageSize,

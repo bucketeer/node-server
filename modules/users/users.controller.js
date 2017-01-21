@@ -17,8 +17,8 @@ module.exports.getUsers = (req, res) => {
     let page = parseInt(req.query.page || 0);
     let filter = {};
 
-    if (req.query.email) {
-        filter.email = req.query.email;
+    if (req.query._id) {
+        filter._id = req.query._id;
     }
 
     User.paginate(filter, {
@@ -251,7 +251,7 @@ module.exports.signInUser = (req, res) => {
                 authenticated: true,
                 user: {
                     _id: user._id,
-                    goals: req.body.user.goals,
+                    goals: user.goals,
                     roles: user.roles,
                     profile: user.profile,
                     email: user.email
