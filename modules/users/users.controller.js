@@ -73,6 +73,7 @@ module.exports.signUpUser = (req, res) => {
         email: req.body.user.email,
         password: req.body.user.password,
         goals: req.body.user.goals,
+        publicGoals: req.body.user.publicGoals
     });
 
     if (req.body.user.profile) {
@@ -163,6 +164,7 @@ module.exports.signUpUser = (req, res) => {
                     user: {
                         _id: user._id,
                         goals: req.body.user.goals,
+                        publicGoals: req.body.user.publicGoals,
                         roles: user.roles,
                         profile: user.profile,
                         email: user.email
@@ -216,6 +218,7 @@ module.exports.signInUser = (req, res) => {
                 user: {
                     _id: user._id,
                     goals: user.goals,
+                    publicGoals: user.publicGoals,
                     roles: user.roles,
                     profile: user.profile,
                     email: user.email
@@ -243,8 +246,7 @@ module.exports.signInUser = (req, res) => {
                 _id: user._id
             }, settings.token.secret, settings.token.options);
 
-            res.cookie("token", token);
-
+            res.cookie("token", token);            
             successObj = {
                 success: true,
                 msg: "User signed in successfully.",
@@ -252,6 +254,7 @@ module.exports.signInUser = (req, res) => {
                 user: {
                     _id: user._id,
                     goals: user.goals,
+                    publicGoals: user.publicGoals,
                     roles: user.roles,
                     profile: user.profile,
                     email: user.email
@@ -297,6 +300,7 @@ module.exports.updateUserById = (req, res) => {
         let updateUser = {
             $set: {
                 goals: req.body.user.goals,
+                publicGoals: req.body.user.publicGoals,
                 roles: req.body.user.roles,
                 profile: req.body.user.profile
             }
@@ -325,6 +329,7 @@ module.exports.updateUserById = (req, res) => {
                 user: {
                     _id: user._id,
                     goals: req.body.user.goals,
+                    publicGoals: req.body.user.publicGoals,
                     roles: req.body.user.roles,
                     profile: req.body.user.profile,
                     email: user.email

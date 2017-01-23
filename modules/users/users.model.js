@@ -44,6 +44,10 @@ let userSchema = new mongoose.Schema({
     type: Array,
     default: []
   },
+  publicGoals: {
+    type: Array,
+    default: []
+  },
   tokens: {
     type: Array
   },

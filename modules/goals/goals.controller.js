@@ -5,7 +5,7 @@ require("rootpath")();
 const Event = require("modules/events/events.model");
 const Goal = require("modules/goals/goals.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`);
-const select = "_id name description category hashtags media location completed isPrivate";
+const select = "_id name description category hashtags media location completed publicGoalId isPrivate";
 const winston = require("winston");
 
 module.exports.getGoals = (req, res) => {
@@ -15,18 +15,22 @@ module.exports.getGoals = (req, res) => {
     let pageSize = parseInt(req.query.pageSize || settings.api.results.defaultPageSize || 1);
     let page = parseInt(req.query.page || 0);
     let filter = {};
-    
+
+    if (req.query.isPrivate) {
+        filter.isPrivate = req.query.isPrivate;
+    }
+
     if (req.query._id) {
         filter._id = req.query._id;
     }
-    
+
     if (req.query._ids) {
         let idList = req.query._ids;
         filter._id = {
             $in: idList
         };
     }
-    console.log(JSON.stringify(filter));
+
     Goal.paginate(filter, {
         select,
         offset: page * pageSize,
@@ -42,7 +46,7 @@ module.exports.getGoals = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
-        
+
         successObj = {
             success: true,
             msg: "Goals retrieved successfully.",
@@ -54,7 +58,7 @@ module.exports.getGoals = (req, res) => {
             previousPage: (page - 1 < 0) ? false : `${settings.server.http.host}:${settings.server.http.port}/api/goals?page=${page-1}`,
             redirect: redirect
         };
-        
+
         return res.status(200).send(successObj);
     });
 };
@@ -63,7 +67,7 @@ module.exports.createGoal = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
-    
+
     if (!req.body.goal) {
         errorObj = {
             success: false,
@@ -73,7 +77,7 @@ module.exports.createGoal = (req, res) => {
         };
         return res.status(400).send(errorObj);
     }
-    
+
     let goal = new Goal({
         name: req.body.goal.name,
         description: req.body.goal.description,
@@ -82,13 +86,14 @@ module.exports.createGoal = (req, res) => {
         location: req.body.goal.location,
         media: req.body.goal.media,
         completed: req.body.goal.completed,
+        publicGoalId: req.body.goal.publicGoalId,
         isPrivate: req.body.goal.isPrivate
     });
-    
+
     if (req.body.goal._id) {
         goal._id = req.body.goal._id;
     }
-   
+
     goal.save(function (err) {
         if (err && err.name === "ValidationError") {
             winston.error(JSON.stringify(err.errors));
@@ -122,6 +127,7 @@ module.exports.createGoal = (req, res) => {
                     location: goal.location,
                     media: goal.media,
                     completed: goal.completed,
+                    publicGoalId: goal.publicGoalId,
                     isPrivate: goal.isPrivate
                 },
                 redirect: redirect
@@ -135,7 +141,7 @@ module.exports.updateGoalById = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
-    
+
     Goal.findOne({
         _id: req.params._id
     }, (err, goal) => {
@@ -149,7 +155,7 @@ module.exports.updateGoalById = (req, res) => {
 
             return res.status(404).send(errorObj);
         }
-        
+
         if (err) {
             winston.error(JSON.stringify(err));
             errorObj = {
@@ -161,7 +167,7 @@ module.exports.updateGoalById = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
-        
+
         let updategoal = {
             $set: {
                 name: req.body.goal.name,
@@ -171,10 +177,11 @@ module.exports.updateGoalById = (req, res) => {
                 location: req.body.goal.location,
                 media: req.body.goal.media,
                 completed: req.body.goal.completed,
+                publicGoalId: req.body.goal.publicGoalId,
                 isPrivate: req.body.goal.isPrivate
             }
         }
-        
+
         Goal.update({
             _id: goal._id
         }, updategoal, {
@@ -191,7 +198,7 @@ module.exports.updateGoalById = (req, res) => {
                 };
                 return res.status(500).send(errorObj);
             }
-            
+
             successObj = {
                 success: true,
                 msg: "Goal updated successfully.",
@@ -204,6 +211,7 @@ module.exports.updateGoalById = (req, res) => {
                     location: req.body.goal.location,
                     media: req.body.goal.media,
                     completed: req.body.goal.completed,
+                    publicGoalId: req.body.goal.publicGoalId,
                     isPrivate: req.body.goal.isPrivate
                 },
                 redirect: redirect
@@ -217,7 +225,7 @@ module.exports.deleteGoalById = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
-   
+
     Goal.remove({
         _id: req.params._id
     }, function (err) {
@@ -232,7 +240,7 @@ module.exports.deleteGoalById = (req, res) => {
             };
             return res.status(500).send(errorObj);
         }
-        
+
         successObj = {
             success: true,
             msg: "Goal deleted successfully.",

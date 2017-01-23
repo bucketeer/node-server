@@ -50,6 +50,9 @@ let goalSchema = new mongoose.Schema({
       type: Date
     }
   },
+  publicGoalId: {
+    type: String
+  },
   isPrivate: {
     type: Boolean,
     default: false
