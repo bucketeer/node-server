@@ -6,7 +6,7 @@ const Event = require("modules/events/events.model");
 const jwt = require("jsonwebtoken");
 const User = require("modules/users/users.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`);
-const select = "_id email goals roles profile";
+const select = "_id email goals publicGoals roles profile";
 const winston = require("winston");
 
 module.exports.getUsers = (req, res) => {
@@ -209,7 +209,7 @@ module.exports.signInUser = (req, res) => {
             };
             return res.status(200).send(errorObj);
         }
-
+        
         if (!req.body.authenticate) {
             successObj = {
                 success: true,
@@ -246,7 +246,7 @@ module.exports.signInUser = (req, res) => {
                 _id: user._id
             }, settings.token.secret, settings.token.options);
 
-            res.cookie("token", token);            
+            res.cookie("token", token);                        
             successObj = {
                 success: true,
                 msg: "User signed in successfully.",
@@ -271,7 +271,7 @@ module.exports.updateUserById = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
     let successObj = {};
-
+    
     User.findOne({
         _id: req.params._id
     }, (err, user) => {
