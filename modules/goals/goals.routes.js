@@ -7,6 +7,7 @@ const express = require("express");
 const api = express.Router();
 
 api.get("/", goals.getGoals);
+api.post("/search", goals.searchGoals);
 // api.use() AUTH goes here
 api.post("/", goals.createGoal);
 api.put("/:_id", goals.updateGoalById);

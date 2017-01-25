@@ -5,7 +5,7 @@ require("rootpath")();
 const Event = require("modules/events/events.model");
 const Goal = require("modules/goals/goals.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`);
-const select = "_id name description category hashtags media location completed publicGoalId isPrivate";
+const select = "_id name description category hashtags media location completed publicGoalId isPrivate createdAt";
 const winston = require("winston");
 
 module.exports.getGoals = (req, res) => {
@@ -63,6 +63,56 @@ module.exports.getGoals = (req, res) => {
     });
 };
 
+module.exports.searchGoals = (req, res) => {
+    let redirect = req.body.redirect || false;
+    let errorObj = {};
+    let successObj = {};
+    let pageSize = parseInt(req.query.pageSize || settings.api.results.defaultPageSize || 1);
+    let page = parseInt(req.query.page || 0);
+    let searchSelect = "_id name hashtags";
+    let filter = {
+        $text: {
+            $search: req.body.searchText
+        }
+    };
+
+    if (req.query.isPrivate) {
+        filter.isPrivate = req.query.isPrivate;
+    }
+
+    Goal.paginate(
+        filter, {
+            select,
+            offset: page * pageSize,
+            limit: pageSize
+        }, (err, goals) => {
+            if (err) {
+                winston.error(JSON.stringify(err));
+                errorObj = {
+                    success: false,
+                    errCode: "0016",
+                    errMsg: "Failed to get goals.",
+                    redirect: redirect
+                };
+                return res.status(200).send(errorObj);
+            }
+
+            successObj = {
+                success: true,
+                msg: "Goals retrieved successfully.",
+                goals: goals.docs,
+                totalResults: goals.total,
+                pageSize: pageSize,
+                page: page,
+                nextPage: `${settings.server.http.host}:${settings.server.http.port}/api/goals?page=${page+1}`,
+                previousPage: (page - 1 < 0) ? false : `${settings.server.http.host}:${settings.server.http.port}/api/goals?page=${page-1}`,
+                redirect: redirect
+            };
+
+            return res.status(200).send(successObj);
+        });
+};
+
 module.exports.createGoal = (req, res) => {
     let redirect = req.body.redirect || false;
     let errorObj = {};
@@ -75,7 +125,7 @@ module.exports.createGoal = (req, res) => {
             errMsg: "No goal data supplied",
             redirect: redirect
         };
-        return res.status(400).send(errorObj);
+        return res.status(200).send(errorObj);
     }
 
     let goal = new Goal({
@@ -104,7 +154,7 @@ module.exports.createGoal = (req, res) => {
                 msg: JSON.stringify(err.errors),
                 redirect: redirect
             };
-            return res.status(400).send(errorObj);
+            return res.status(200).send(errorObj);
         } else if (err) {
             winston.error(JSON.stringify(err));
             errorObj = {
@@ -113,7 +163,7 @@ module.exports.createGoal = (req, res) => {
                 errMsg: "Error creating goal.",
                 redirect: redirect
             };
-            return res.status(500).send(errorObj);
+            return res.status(200).send(errorObj);
         } else {
             successObj = {
                 success: true,
@@ -196,7 +246,7 @@ module.exports.updateGoalById = (req, res) => {
                     msg: JSON.stringify(err),
                     redirect: redirect
                 };
-                return res.status(500).send(errorObj);
+                return res.status(200).send(errorObj);
             }
 
             successObj = {
@@ -238,7 +288,7 @@ module.exports.deleteGoalById = (req, res) => {
                 msg: JSON.stringify(err),
                 redirect: redirect
             };
-            return res.status(500).send(errorObj);
+            return res.status(200).send(errorObj);
         }
 
         successObj = {

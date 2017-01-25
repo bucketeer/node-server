@@ -56,7 +56,15 @@ let goalSchema = new mongoose.Schema({
   isPrivate: {
     type: Boolean,
     default: false
+  },
+  searchText: {
+    type: String,
+    default: ""
   }
+});
+
+goalSchema.index({
+  "$**": "text"  
 });
 
 goalSchema.pre("save", function (next) {
