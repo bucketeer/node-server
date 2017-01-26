@@ -2,8 +2,8 @@
 
 require("rootpath")();
 
-const Event = require("modules/events/events.model");
-const Goal = require("modules/goals/goals.model");
+const Event = require("components/api/events/events.model");
+const Goal = require("components/api/goals/goals.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`);
 const select = "_id name description category hashtags media location completed publicGoalId isPrivate createdAt";
 const winston = require("winston");

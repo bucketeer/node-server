@@ -2,7 +2,7 @@
 
 require("rootpath")();
 
-const goals = require("modules/goals/goals.controller");
+const goals = require("components/api/goals/goals.controller");
 const express = require("express");
 const api = express.Router();
 

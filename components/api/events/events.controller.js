@@ -2,7 +2,7 @@
 
 require("rootpath")();
 
-const Event = require("modules/events/events.model");
+const Event = require("components/api/events/events.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`);
 const select = "_id groupId type text success";
 const winston = require("winston");

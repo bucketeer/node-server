@@ -2,7 +2,7 @@
 
 require("rootpath")();
 
-const events = require("modules/events/events.controller");
+const events = require("components/api/events/events.controller");
 const express = require("express");
 const api = express.Router();
 

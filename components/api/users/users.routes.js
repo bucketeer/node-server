@@ -2,7 +2,7 @@
 
 require("rootpath")();
 
-const users = require("modules/users/users.controller");
+const users = require("components/api/users/users.controller");
 const express = require("express");
 const api = express.Router();
 

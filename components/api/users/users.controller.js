@@ -2,9 +2,9 @@
 
 require("rootpath")();
 
-const Event = require("modules/events/events.model");
+const Event = require("components/api/events/events.model");
 const jwt = require("jsonwebtoken");
-const User = require("modules/users/users.model");
+const User = require("components/api/users/users.model");
 const settings = require(`configs/environments/settings.${process.env.NODE_ENV || "development"}`);
 const select = "_id email goals publicGoals roles profile";
 const winston = require("winston");
