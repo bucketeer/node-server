@@ -24,7 +24,7 @@ module.exports = {
             dir: "logs"
         },
         whitelist: [
-            "https://bucketeer17.herokuapp.com/"
+            "https://bucketeer-ng2-client.herokuapp.com"
         ],
         networkIP: `http://${ip.address()}`,
         http: {
@@ -61,8 +61,8 @@ module.exports = {
         authenticate: true
     },
     client: {
-        home: "https://bucketeer17.herokuapp.com/",
-        signin: "https://bucketeer17.herokuapp.com/signin"
+        home: "https://bucketeer-ng2-client.herokuapp.com",
+        signin: "https://bucketeer-ng2-client.herokuapp.com/signin"
     },
     googleAnalytics: ""
 
