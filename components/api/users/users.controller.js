@@ -155,7 +155,7 @@ module.exports.signUpUser = (req, res) => {
             } else {
                 let token = jwt.sign({
                     _id: user._id
-                }, settings.token.secret, settings.token.options);
+                }, settings.api.token.secret, settings.api.token.options);
                 res.cookie("token", token);
                 successObj = {
                     success: true,
@@ -244,7 +244,7 @@ module.exports.signInUser = (req, res) => {
 
             let token = jwt.sign({
                 _id: user._id
-            }, settings.token.secret, settings.token.options);
+            }, settings.api.token.secret, settings.api.token.options);
 
             res.cookie("token", token);                        
             successObj = {

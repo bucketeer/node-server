@@ -42,20 +42,6 @@ module.exports = (settings, server) => {
 				name: "debug-file"
 			}),
 			new(winston.transports.DailyRotateFile)({
-				filename: `${logDir}info.log`,
-				datePattern: "yyyy-MM-dd-",
-				prepend: true,
-				level: "info",
-				name: "info-file"
-			}),
-			new(winston.transports.DailyRotateFile)({
-				filename: `${logDir}warn.log`,
-				datePattern: "yyyy-MM-dd-",
-				prepend: true,
-				level: "warn",
-				name: "warn-file"
-			}),
-			new(winston.transports.DailyRotateFile)({
 				filename: `${logDir}error.log`,
 				datePattern: "yyyy-MM-dd-",
 				prepend: true,
@@ -73,3 +59,20 @@ module.exports = (settings, server) => {
 		]
 	});
 };
+
+/** more granular logging files if needed
+new(winston.transports.DailyRotateFile)({
+	filename: `${logDir}info.log`,
+	datePattern: "yyyy-MM-dd-",
+	prepend: true,
+	level: "info",
+	name: "info-file"
+}),
+new(winston.transports.DailyRotateFile)({
+	filename: `${logDir}warn.log`,
+	datePattern: "yyyy-MM-dd-",
+	prepend: true,
+	level: "warn",
+	name: "warn-file"
+}),
+**/

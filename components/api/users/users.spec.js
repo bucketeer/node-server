@@ -20,7 +20,7 @@ frisby.create("Get Users")
         msg: String,
         users: Array
     })
-    .afterJSON(function (data) {
+    .afterJSON((res) => {
 
     })
     .waits(wait)
@@ -54,7 +54,7 @@ frisby.create("Sign Up User")
         user: Object,
         token: String
     })
-    .afterJSON(function (data) {
+    .afterJSON((res) => {
 
     })
     .waits(wait)
@@ -78,8 +78,8 @@ frisby.create("Sign In User No Authenticated")
         authenticated: Boolean,
         user: Object
     })
-    .afterJSON(function (data) {
-        expect(data.authenticated).toBe(false);
+    .afterJSON((res) => {
+        expect(res.authenticated).toBe(false);
     })
     .waits(wait)
     .toss();
@@ -103,8 +103,8 @@ frisby.create("Sign In User Authenticated")
         user: Object,
         token: String
     })
-    .afterJSON(function (data) {
-        expect(data.authenticated).toBe(true);
+    .afterJSON((res) => {
+        expect(res.authenticated).toBe(true);
     })
     .waits(wait)
     .toss();

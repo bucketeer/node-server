@@ -49,21 +49,20 @@ module.exports = {
         }
     },
     api: {
-
-
         results: {
             defaultPageSize: 25
-        }
+        },
+        token: {
+            secret: process.env.SECRET || "bucketeer",
+            options: {
+                expiresIn: process.env.TOKEN_EXPIRES || "1hr",
+            }
+        },
+        authenticate: false
     },
     client: {
         home: "http://localhost:4400",
         signin: "http://localhost:4400"
-    },
-    token: {
-        secret: process.env.SECRET || "bucketeer",
-        options: {
-            expiresIn: process.env.TOKEN_EXPIRES || 60 * 120,
-        }
     },
     googleAnalytics: ""
 
