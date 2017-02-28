@@ -17,7 +17,4 @@ module.exports = (settings, server) => {
     server.get("/404", function(req, res) {
         res.sendFile(path.join(__dirname, "../views/404.html"));
     });
-    server.get("*", function(req, res) {
-        res.sendFile(path.join(__dirname, "../views/404.html"));
-    });
 };

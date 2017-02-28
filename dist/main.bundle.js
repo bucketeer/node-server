@@ -5311,8 +5311,10 @@ function wrapIntoObservable(value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_catch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Rx__ = __webpack_require__(400);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__config_request_options__ = __webpack_require__(357);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__config_app_config__ = __webpack_require__(356);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__config_request_options__ = __webpack_require__(357);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__config_app_config__ = __webpack_require__(356);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return UsersService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -5330,10 +5332,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var UsersService = (function () {
     function UsersService(_http) {
         this._http = _http;
         this.currentUser = JSON.parse(localStorage.getItem("b_user") || '{}');
+        this.currentUser$ = new __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__["Subject"]();
     }
     UsersService.prototype.isAdmin = function () {
         if (!this.currentUser || !this.currentUser.roles) {
@@ -5359,10 +5363,10 @@ var UsersService = (function () {
     };
     UsersService.prototype.updateCurrentUser = function () {
         localStorage.setItem("b_user", JSON.stringify(this.currentUser || {}));
-        return this.currentUser || {};
+        this.currentUser$.next(this.currentUser);
     };
     UsersService.prototype.getUsers = function () {
-        return this._http.get(__WEBPACK_IMPORTED_MODULE_6__config_app_config__["a" /* AppConfig */].server + "/api/users/", __WEBPACK_IMPORTED_MODULE_5__config_request_options__["a" /* Options */])
+        return this._http.get(__WEBPACK_IMPORTED_MODULE_7__config_app_config__["a" /* AppConfig */].server + "/api/users/", __WEBPACK_IMPORTED_MODULE_6__config_request_options__["a" /* Options */])
             .map(function (res) {
             return res.json();
         })
@@ -5370,7 +5374,7 @@ var UsersService = (function () {
     };
     UsersService.prototype.getUser = function (id) {
         var _this = this;
-        return this._http.get(__WEBPACK_IMPORTED_MODULE_6__config_app_config__["a" /* AppConfig */].server + "/api/users?_id=" + id, __WEBPACK_IMPORTED_MODULE_5__config_request_options__["a" /* Options */])
+        return this._http.get(__WEBPACK_IMPORTED_MODULE_7__config_app_config__["a" /* AppConfig */].server + "/api/users?_id=" + id, __WEBPACK_IMPORTED_MODULE_6__config_request_options__["a" /* Options */])
             .map(function (res) {
             var data = res.json();
             if (data.success) {
@@ -5386,7 +5390,7 @@ var UsersService = (function () {
             this.currentUser.goals.push(goalId);
         }
         this.updateCurrentUser();
-        return this._http.put(__WEBPACK_IMPORTED_MODULE_6__config_app_config__["a" /* AppConfig */].server + "/api/users/" + this.currentUser._id, { user: this.currentUser }, __WEBPACK_IMPORTED_MODULE_5__config_request_options__["a" /* Options */])
+        return this._http.put(__WEBPACK_IMPORTED_MODULE_7__config_app_config__["a" /* AppConfig */].server + "/api/users/" + this.currentUser._id, { user: this.currentUser }, __WEBPACK_IMPORTED_MODULE_6__config_request_options__["a" /* Options */])
             .map(function (res) {
             return res.json();
         })
@@ -5400,7 +5404,7 @@ var UsersService = (function () {
             this.currentUser.publicGoals.push(publicGoalId);
         }
         this.updateCurrentUser();
-        return this._http.put(__WEBPACK_IMPORTED_MODULE_6__config_app_config__["a" /* AppConfig */].server + "/api/users/" + this.currentUser._id, { user: this.currentUser }, __WEBPACK_IMPORTED_MODULE_5__config_request_options__["a" /* Options */])
+        return this._http.put(__WEBPACK_IMPORTED_MODULE_7__config_app_config__["a" /* AppConfig */].server + "/api/users/" + this.currentUser._id, { user: this.currentUser }, __WEBPACK_IMPORTED_MODULE_6__config_request_options__["a" /* Options */])
             .map(function (res) {
             return res.json();
         })
@@ -5408,7 +5412,7 @@ var UsersService = (function () {
     };
     UsersService.prototype.signin = function (user) {
         var _this = this;
-        return this._http.post(__WEBPACK_IMPORTED_MODULE_6__config_app_config__["a" /* AppConfig */].server + "/api/users/signin", { authenticate: true, user: user }, __WEBPACK_IMPORTED_MODULE_5__config_request_options__["a" /* Options */])
+        return this._http.post(__WEBPACK_IMPORTED_MODULE_7__config_app_config__["a" /* AppConfig */].server + "/api/users/signin", { authenticate: true, user: user }, __WEBPACK_IMPORTED_MODULE_6__config_request_options__["a" /* Options */])
             .map(function (res) {
             var data = res.json();
             if (data.authenticated && data.success) {
@@ -5422,7 +5426,7 @@ var UsersService = (function () {
     };
     UsersService.prototype.signup = function (user) {
         var _this = this;
-        return this._http.post(__WEBPACK_IMPORTED_MODULE_6__config_app_config__["a" /* AppConfig */].server + "/api/users/signup", { user: user }, __WEBPACK_IMPORTED_MODULE_5__config_request_options__["a" /* Options */])
+        return this._http.post(__WEBPACK_IMPORTED_MODULE_7__config_app_config__["a" /* AppConfig */].server + "/api/users/signup", { user: user }, __WEBPACK_IMPORTED_MODULE_6__config_request_options__["a" /* Options */])
             .map(function (res) {
             var data = res.json();
             if (data.success) {
@@ -5436,7 +5440,7 @@ var UsersService = (function () {
     };
     UsersService.prototype.signout = function () {
         var _this = this;
-        return this._http.post(__WEBPACK_IMPORTED_MODULE_6__config_app_config__["a" /* AppConfig */].server + "/api/users/signout", {}, __WEBPACK_IMPORTED_MODULE_5__config_request_options__["a" /* Options */])
+        return this._http.post(__WEBPACK_IMPORTED_MODULE_7__config_app_config__["a" /* AppConfig */].server + "/api/users/signout", {}, __WEBPACK_IMPORTED_MODULE_6__config_request_options__["a" /* Options */])
             .map(function (res) {
             var data = res.json();
             localStorage.removeItem("b_user");
@@ -45738,7 +45742,7 @@ var GoalsListComponent = (function () {
                 }
             });
         });
-        this.currentUser = this._usersService.updateCurrentUser();
+        this._usersService.updateCurrentUser();
     };
     GoalsListComponent.prototype.isOwnedByUser = function (goal) {
         return this._usersService.isOwnedByUser(goal);
@@ -45961,7 +45965,6 @@ var SigninComponent = (function () {
             }
             _this.userForm.reset();
             _this._router.navigate(['user-profile']);
-            window.location.reload();
         }, function (err) {
             _this.isSigningIn = false;
             _this.signinErrors.push(err);
@@ -62845,7 +62848,6 @@ var NavbarComponent = (function () {
         this.searchResultState = 'empty';
         this.showNavBg = true;
         this.bannerState = '';
-        this.currentUser = {};
         this.searchSelected = false;
         this.searchResults = [];
         this.queryString = '';
@@ -62855,17 +62857,24 @@ var NavbarComponent = (function () {
         setTimeout(function () {
             _this.navState = 'loaded';
         }, 500);
-        this.currentUser = this._usersService.currentUser;
-        if (this.currentUser._id) {
+        this.currentUser$ = this._usersService.currentUser$;
+        if (this.currentUser$) {
             this.bannerState = "signedin";
         }
+        this.currentUserSubscriber = this._usersService.currentUser$.subscribe({
+            next: function (_currentUser) { return _this.currentUser$ = _currentUser; },
+            error: function (err) { return console.error('Error with the user service', err); },
+            complete: function () {
+                console.log('Completed: no more new clicks');
+                _this.currentUserSubscriber.unsubscribe();
+            }
+        });
     };
     NavbarComponent.prototype.signout = function () {
         var _this = this;
         this._usersService.signout()
             .subscribe(function (data) {
             _this._router.navigate(['home']);
-            window.location.reload();
         });
     };
     NavbarComponent.prototype.signup = function () {
@@ -66013,7 +66022,7 @@ module.exports = "<div [@goalsListState]=\"goalsListState\" class=\"goals-contai
 /* 716 */
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"banner\" [@bannerState]=\"bannerState\">Join to start making your list. &nbsp;\n  <a (click)=\"signup()\">Join Now!</a>\n</div>\n<nav class=\"navbar _navbar-transparent navbar-default _navbar-fixed-top\" [@navState]=\"navState\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\".navbar-main-collapse\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n        </button>\n      <a class=\"navbar-brand\" routerLink=\"/\"><i class=\"fa fa-check-square\"></i></a>\n    </div>\n    <div class=\"collapse navbar-collapse navbar-main-collapse\">\n      <ul class=\"nav navbar-nav navbar-left\">\n        <li class=\"search-bar\">\n          <i class=\"fa fa-search\"></i>\n          <input type=\"text\" placeholder=\"Goal or Hashtags\" [(ngModel)]=\"queryString\" (keyup)=\"search()\" (click)=\"handleShowSearch()\"\n            [ngClass]=\"{selected: searchSelected}\">\n            <div class=\"search-results\" *ngIf=\"searchResults.length > 0\" [@searchResultState]=\"searchResultState\">\n              <ul>\n                <li *ngFor=\"let result of searchResults\" (click)=\"selectGoal(result)\">\n                  <div class=\"result-name\">{{ result.name }}</div>\n                  <div>\n                    <span *ngFor=\"let hashtag of result.hashtags\">\n                      #{{ hashtag }} &nbsp;\n                    </span>\n                  </div>\n                </li>\n              </ul>\n            </div>\n        </li>\n      </ul>\n      <ul class=\"nav navbar-nav navbar-right\">\n        <li class=\"pages\">\n          <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n            <i class=\"fa fa-th\"></i>\n          </a>\n          <ul class=\"dropdown-menu\">\n            <li><a routerLink=\"/about\">About</a></li>\n            <li><a routerLink=\"/contact\">Contact</a></li>\n            <li><a routerLink=\"/users\">Users</a></li>\n            <li><a routerLink=\"/goals\">Community Goals</a></li>\n            <li><a routerLink=\"/new-goal\">New Goals</a></li>\n          </ul>\n        </li>\n        <li *ngIf=\"!currentUser.email\">\n          <a routerLink=\"/signup\">Sign Up <i class=\"fa fa-fw fa-user-plus\"></i></a>\n        </li>\n        <li *ngIf=\"!currentUser.email\">\n          <a routerLink=\"/signin\">Sign In <i class=\"fa fa-fw fa-sign-in\"></i></a>\n        </li>\n        <li *ngIf=\"!!currentUser.email\">\n          <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n              {{ currentUser.profile.username }} <i class=\"fa fa-fw fa-user-circle-o\"></i>\n            </a>\n          <ul class=\"dropdown-menu\">\n            <li><a routerLink=\"/user-profile\">My Profile</a></li>\n            <!--<li><a routerLink=\"/user-goals\">My Goals</a></li>-->\n            <li><a (click)=\"signout()\">Sign Out</a>\n          </ul>\n          </li>\n      </ul>\n    </div>\n  </div>\n</nav>\n"
+module.exports = "<div class=\"banner\" [@bannerState]=\"bannerState\">Join to start making your list. &nbsp;\n    <a (click)=\"signup()\">Join Now!</a>\n</div>\n<nav class=\"navbar _navbar-transparent navbar-default _navbar-fixed-top\" [@navState]=\"navState\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-header\">\n            <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\".navbar-main-collapse\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n        </button>\n            <a class=\"navbar-brand\" routerLink=\"/\"><i class=\"fa fa-check-square\"></i></a>\n        </div>\n        <div class=\"collapse navbar-collapse navbar-main-collapse\">\n            <ul class=\"nav navbar-nav navbar-left\">\n                <li class=\"search-bar\">\n                    <i class=\"fa fa-search\"></i>\n                    <input type=\"text\" placeholder=\"Goal or Hashtags\" [(ngModel)]=\"queryString\" (keyup)=\"search()\" (click)=\"handleShowSearch()\" [ngClass]=\"{selected: searchSelected}\">\n                    <div class=\"search-results\" *ngIf=\"searchResults.length > 0\" [@searchResultState]=\"searchResultState\">\n                        <ul>\n                            <li *ngFor=\"let result of searchResults\" (click)=\"selectGoal(result)\">\n                                <div class=\"result-name\">{{ result.name }}</div>\n                                <div>\n                                    <span *ngFor=\"let hashtag of result.hashtags\">\n                      #{{ hashtag }} &nbsp;\n                    </span>\n                                </div>\n                            </li>\n                        </ul>\n                    </div>\n                </li>\n            </ul>\n            <ul class=\"nav navbar-nav navbar-right\">\n                <li class=\"pages\">\n                    <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n                        <i class=\"fa fa-th\"></i>\n                    </a>\n                    <ul class=\"dropdown-menu\">\n                        <li><a routerLink=\"/about\">About</a></li>\n                        <li><a routerLink=\"/contact\">Contact</a></li>\n                        <li><a routerLink=\"/users\">Users</a></li>\n                        <li><a routerLink=\"/goals\">Community Goals</a></li>\n                        <li><a routerLink=\"/new-goal\">New Goals</a></li>\n                    </ul>\n                </li>\n                <li *ngIf=\"!currentUser$ || !currentUser$.email\">\n                    <a routerLink=\"/signup\">Sign Up <i class=\"fa fa-fw fa-user-plus\"></i></a>\n                </li>\n                <li *ngIf=\"!currentUser$ || !currentUser$.email\">\n                    <a routerLink=\"/signin\">Sign In <i class=\"fa fa-fw fa-sign-in\"></i></a>\n                </li>\n                <li *ngIf=\"currentUser$ && currentUser$.profile\">\n                    <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n                        {{ currentUser$.profile.username }}\n                        <i class=\"fa fa-fw fa-user-circle-o\"></i>\n                    </a>\n                    <ul class=\"dropdown-menu\">\n                        <li><a routerLink=\"/user-profile\">My Profile</a></li>\n                        <!--<li><a routerLink=\"/user-goals\">My Goals</a></li>-->\n                        <li><a (click)=\"signout()\">Sign Out</a>\n                    </ul>\n                    </li>\n            </ul>\n        </div>\n    </div>\n</nav>"
 
 /***/ },
 /* 717 */

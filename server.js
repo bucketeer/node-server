@@ -25,8 +25,8 @@ require("modules/cors")(settings, server);
 require("modules/apiRoutes")(settings, server);
 require("modules/swagger")(settings, server);
 require("modules/graphql")(settings, server);
-require("modules/client")(settings, server);
 require("modules/errorRoutes")(settings, server);
+require("modules/client")(settings, server);
 
 // initialize
 server.listen(settings.server.http.port, () => {
