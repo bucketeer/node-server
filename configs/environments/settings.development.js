@@ -24,6 +24,7 @@ module.exports = {
             dir: "logs"
         },
         whitelist: [
+            "http://localhost:4400",
             "http://localhost:4200"
         ],
         networkIP: `http://${ip.address()}`,
@@ -41,10 +42,13 @@ module.exports = {
         },
         components: {
             swagger: {
-                endpoint: "/",
+                endpoint: "/swagger",
             },
             graphql: {
                 endpoint: "/graphql",
+            },
+            client: {
+                endpoint: "/"
             }
         }
     },

@@ -21,7 +21,7 @@ module.exports = (settings, server) => {
         licenseUrl: ""
     });
     require("./cors")(settings, swaggerApp);
-    swaggerApp.get("/", function (req, res) {
+    swaggerApp.get("/", function(req, res) {
         res.sendFile(path.join(__dirname, "../swagger/index.html"));
     });
     swaggerExpress.configureSwaggerPaths("", "api-docs", "");
